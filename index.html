@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>كريب حكاية | Crepe Hekaya - تجربة طعام ثلاثية الأبعاد فاخرة</title>
+  <meta name="description" content="كريب حكاية - أفضل كريب في مصر. تجربة مبتكرة مع منيو ثلاثي الأبعاد وصانع الكريب التفاعلي. اطلب الآن واستمتع بطعم حكاية!" />
+  <meta name="keywords" content="كريب, كريب حكاية, crepe, crepe hekaya, صانع كريب 3D, كريب فراخ, كريب لحمة" />
+  <meta name="theme-color" content="#121212" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥙</text></svg>">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Modular Stylesheets -->
+  <link rel="stylesheet" href="assets/css/main.css?v=3.0">
+  <link rel="stylesheet" href="assets/css/components.css?v=9.0">
+  <link rel="stylesheet" href="assets/css/pages.css?v=9.0">
+
+  <!-- Swiper Slider CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- ES Modules Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "gsap": "https://esm.sh/gsap",
+      "lenis": "https://esm.sh/lenis",
+      "canvas-confetti": "https://esm.sh/canvas-confetti"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <h1 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">كريب حكاية - أفضل كريب في أسيوط | Crepe Hekaya</h1>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar">
+      <div class="nav-container">
+        <a href="#/" class="nav-logo">
+          <span class="logo-icon">🥙</span>
+          <div class="logo-text">
+            <span class="logo-ar">كريب حكاية</span>
+            <span class="logo-en">Crepe Hekaya</span>
+          </div>
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="#/" class="nav-link active" data-page="home">الرئيسية</a>
+          <a href="#/menu" class="nav-link" data-page="menu">المنيو</a>
+          <a href="#/builder" class="nav-link" data-page="builder">اصنع كريبك 🥙</a>
+          <a href="#/about" class="nav-link" data-page="about">عن حكاية</a>
+          <a href="#/contact" class="nav-link" data-page="contact">تواصل معنا</a>
+        </div>
+        <div class="nav-actions">
+          <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="تبديل المظهر">🌓</button>
+          <button id="cartBtn" class="cart-btn" onclick="window.location.hash='#/cart'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="m1 1 4 0 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+          </button>
+          <button id="authBtn" class="auth-btn" onclick="window.location.hash='#/auth'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span id="authBtnText">حسابي</span>
+          </button>
+          <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileOverlay" style="display: none;">
+      <div class="mobile-menu">
+        <a href="#/" class="mobile-link" data-page="home">الرئيسية</a>
+        <a href="#/menu" class="mobile-link" data-page="menu">المنيو</a>
+        <a href="#/builder" class="mobile-link" data-page="builder">اصنع كريبك 🥙</a>
+        <a href="#/about" class="mobile-link" data-page="about">عن حكاية</a>
+        <a href="#/contact" class="mobile-link" data-page="contact">تواصل معنا</a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="mainContent"></main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Interactive Cursor elements -->
+    <div class="custom-cursor-dot" id="cursorDot"></div>
+    <div class="custom-cursor-circle" id="cursorCircle"></div>
+
+    <!-- Spin-to-Win Wheel element -->
+    <div class="wheel-overlay" id="wheelOverlay"></div>
+
+    <!-- VIP Bulletproof Grand Luxury Footer -->
+    <footer id="footer" class="footer" style="position:relative; background:linear-gradient(180deg, #130f0c 0%, #080604 100%); border-top:2px solid #ff6b00; box-shadow:0 -15px 40px rgba(0,0,0,0.85); margin-top:60px; padding:50px 20px 25px; color:#fff; z-index:10; direction:rtl; width:100%;">
+      <div style="max-width:1280px; margin:0 auto;">
+        
+        <!-- Top VIP Callout Banner -->
+        <div style="background:linear-gradient(135deg, rgba(255,107,0,0.18) 0%, rgba(255,209,102,0.08) 100%); border:1px solid rgba(255,107,0,0.4); border-radius:20px; padding:24px 30px; margin-bottom:45px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; box-shadow:0 10px 30px rgba(255,107,0,0.15);">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <span style="font-size:2.8rem; filter:drop-shadow(0 4px 8px rgba(255,107,0,0.5));">⚡</span>
+            <div>
+              <h3 style="font-size:1.4rem; font-weight:900; color:#fff; margin-bottom:4px;">جاهز تطلب كريبك الساخن والمقرمش الآن؟</h3>
+              <p style="font-size:0.95rem; color:#d1d5db; margin:0;">دليفري صاروخ يصلك ساخن لباب البيت، أو جهز طلبك للاستلام المباشر من الفرع!</p>
+            </div>
+          </div>
+          <a href="#/menu" class="btn btn-primary" style="background:linear-gradient(135deg, #ff6b00, #ff8c33); color:#fff; padding:14px 28px; border-radius:30px; font-weight:800; font-size:1rem; text-decoration:none; box-shadow:0 6px 20px rgba(255,107,0,0.4);">اطلب أونلاين الآن</a>
+        </div>
+
+        <!-- 4-Column Bulletproof Grid -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:30px; margin-bottom:40px; align-items:start;">
+          
+          <!-- Column 1: Brand & Identity -->
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:24px; text-align:center; display:flex; flex-direction:column; align-items:center;">
+            <div style="display:inline-flex; align-items:center; gap:12px; background:rgba(255,107,0,0.15); padding:10px 20px; border-radius:40px; border:1px solid rgba(255,107,0,0.4); margin-bottom:16px;">
+              <div style="text-align:right;">
+                <span style="display:block; font-size:1.3rem; font-weight:900; color:#ff6b00; line-height:1.1;">كريب حكاية</span>
+                <span style="display:block; font-size:0.75rem; font-family:'Outfit'; font-weight:700; color:#ffd166; letter-spacing:1px;">CREPE HEKAYA</span>
+              </div>
+            </div>
+            <p style="font-size:0.95rem; color:#cbd5e1; line-height:1.7; margin:10px 0;">أفضل وأطعم كريب في مصر! نقدملك أجمل الخلطات وأفخر اللحوم والدواجن الطازجة مع تجربة طعام ثلاثية الأبعاد لا تنسى.</p>
+          </div>
+
+          <!-- Column 2: Quick Links Navigation -->
+          <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:24px;">
+            <h4 style="font-size:1.15rem; font-weight:900; color:#ffd166; margin-bottom:18px; border-bottom:2px solid rgba(255,209,102,0.3); padding-bottom:8px;">
+              روابط سريعة
+            </h4>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <a href="#/" style="display:block; padding:10px 14px; background:rgba(255,255,255,0.04); border-radius:12px; color:#e2e8f0; text-decoration:none; font-weight:700;">الرئيسية المباشرة</a>
+              <a href="#/menu" style="display:block; padding:10px 14px; background:rgba(255,255,255,0.04); border-radius:12px; color:#e2e8f0; text-decoration:none; font-weight:700;">منيو حكاية الكامل</a>
+              <a href="#/offers" style="display:block; padding:10px 14px; background:rgba(255,255,255,0.04); border-radius:12px; color:#e2e8f0; text-decoration:none; font-weight:700;">العروض والكوبونات الحصرية</a>
+            </div>
+          </div>
+
+          <!-- Column 3: Menu Categories -->
+          <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:24px;">
+            <h4 style="font-size:1.15rem; font-weight:900; color:#ff6b00; margin-bottom:18px; border-bottom:2px solid rgba(255,107,0,0.3); padding-bottom:8px;">
+              أقسام المنيو
+            </h4>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <a href="#/menu/chicken" style="display:inline-block; padding:8px 14px; background:rgba(255,107,0,0.12); border:1px solid rgba(255,107,0,0.25); border-radius:30px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:700;">كريب فراخ</a>
+              <a href="#/menu/meat" style="display:inline-block; padding:8px 14px; background:rgba(255,209,102,0.12); border:1px solid rgba(255,209,102,0.25); border-radius:30px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:700;">كريب لحمة</a>
+              <a href="#/menu/mix" style="display:inline-block; padding:8px 14px; background:rgba(249,115,22,0.12); border:1px solid rgba(249,115,22,0.25); border-radius:30px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:700;">الميكسات</a>
+              <a href="#/menu/custom" style="display:inline-block; padding:8px 14px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25); border-radius:30px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:700;">على مزاجك</a>
+              <a href="#/menu/sweet" style="display:inline-block; padding:8px 14px; background:rgba(139,69,19,0.2); border:1px solid rgba(139,69,19,0.4); border-radius:30px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:700;">نوتيلا وطاقة</a>
+              <a href="#/menu/new" style="display:inline-block; padding:8px 14px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); border-radius:30px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:700;">تشكيلة الجديد</a>
+            </div>
+          </div>
+
+          <!-- Column 4: Contact & Hotline -->
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:24px;">
+            <h4 style="font-size:1.15rem; font-weight:900; color:#ffd166; margin-bottom:18px; border-bottom:2px solid rgba(255,209,102,0.3); padding-bottom:8px;">
+              الخط الساخن والفرع
+            </h4>
+            
+            <div style="margin-bottom:16px;">
+              <span style="display:block; font-size:0.8rem; color:#94a3b8; margin-bottom:6px;">أرقام طلب الدليفري الفوري:</span>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <a href="tel:01064319292" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; color:#34d399; font-weight:800; font-family:'Outfit'; text-decoration:none; font-size:1.05rem;">
+                  <span>01064319292</span>
+                  <span style="font-size:0.75rem; background:#10b981; color:#000; padding:2px 8px; border-radius:10px; font-weight:900;">اتصل الآن</span>
+                </a>
+                <a href="tel:01130243484" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:#fff; font-weight:800; font-family:'Outfit'; text-decoration:none; font-size:0.95rem;">
+                  <span>01130243484</span>
+                </a>
+                <a href="tel:01040622459" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:#fff; font-weight:800; font-family:'Outfit'; text-decoration:none; font-size:0.95rem;">
+                  <span>01040622459</span>
+                </a>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:flex-start; gap:10px; padding:12px; background:rgba(0,0,0,0.3); border-radius:12px;">
+              <span style="font-size:0.8rem; line-height:1.6; color:#cbd5e1;">شارع الأزهر، بجوار مطعم بهية (ناحية شارع الرحاب، بجوار فريش وماركت وفر)، أسيوط</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Copyright -->
+        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:24px; text-align:center; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; font-size:0.85rem; color:#94a3b8;">
+          <p style="margin:0;">© 2026 <strong style="color:#ff6b00;">كريب حكاية | Crepe Hekaya</strong> — جميع الحقوق محفوظة لفرع أسيوط.</p>
+          <div style="display:flex; gap:16px;">
+            <span style="color:#ffd166;">طازج ومقرمش</span>
+            <span>•</span>
+            <span style="color:#10b981;">دليفري سريع</span>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script type="module" src="app.js?v=9.4"></script>
+</body>
+</html>
